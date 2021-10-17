@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Saving Accounts And Amounts In Excel</title>
+</head>
+<body>
+<!--<div th:if${not #}-->
+<h1 th:text="${files != null} ? ${files} : 'null'"></h1>
+<!--[[${files}]]-->
+<div th:if="${files != null}">
+    <ul th:each="file : ${files}">
+
+        <li>[[${file.getName()}]]</li>
+    </ul>
+</div>
+<div>
+    <form action="#" th:action="@{/uploadFile}" enctype="multipart/form-data" method="post">
+        <div>
+            <input type="file" name="files" multiple>
+            <input type="submit">add</input>
+        </div>
+    </form>
+</div>
+<br><br><br><br><br><br><br><br><br><br>
+<div>
+    <form action="#" th:action="@{/generateExcel}" method="post">
+        <input type="submit" value="ffffff">
+    </form>
+</div>
+</body>
+</html>
