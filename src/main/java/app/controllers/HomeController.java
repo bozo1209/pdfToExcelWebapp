@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -209,10 +210,27 @@ public class HomeController {
         return list;
     }
 
+    /**
+     * thinks about what methods use to delete duplicate
+     */
     public List<File> addsTwoLists(List<File> first, List<File> second){
 //    public List<MultipartFile> addsTwoLists(List<MultipartFile> first, List<MultipartFile> second){
-        first.addAll(second);
+//        first.addAll(second);
+        first.addAll(removeDuplicatedFiles(first, second));
         return first;
+//        return first.stream().distinct().collect(Collectors.toList());
+    }
+
+    public List<File> removeDuplicatedFiles(List<File> first, List<File> second){
+        for (int i = 0; i < first.size(); i++){
+            for (int j = 0; j < second.size(); j++){
+                System.out.println(first.get(i) + " " + second.get(j));
+                if (first.get(i).equals(second.get(j))){
+                    second.remove(j);
+                }
+            }
+        }
+        return second;
     }
 
     public boolean arrayIsEmptyOrNull(MultipartFile[] array){
