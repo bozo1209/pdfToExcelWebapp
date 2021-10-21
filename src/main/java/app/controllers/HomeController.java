@@ -17,6 +17,9 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -102,6 +105,7 @@ public class HomeController {
             , HttpSession session
             , RedirectAttributes model
     ){
+        String pathToFile;
         System.out.println("lklllllllllllll");
         for (int i = 0; i < multipartFile.length; i++){
             System.out.println("multipartFile[" + i + "] " + multipartFile[i].getName());
@@ -115,12 +119,34 @@ public class HomeController {
 //        if (multipartFile[0].getName().equals("")){
 //            return "redirect:/home";
 //        }
+        System.out.println("multipartFile.length = " + multipartFile.length);
+        System.out.println("multipartFile[0] = " + multipartFile[0].isEmpty());
+        System.out.println("multipartFile[0] = " );
+        if (multipartFile.length == 0){
+            System.out.println("multipartFile.length = " + multipartFile.length);
+            return "redirect:/home";
+        }
         if (multipartFile[0].getOriginalFilename().equals("")){
             return "redirect:/home";
         }
+        pathToFile = session.getServletContext().getRealPath(multipartFile[0].getOriginalFilename());
+        System.out.println("pathToFile = " + pathToFile);
+        String pathToFolder = pathToFile.replaceAll(multipartFile[0].getOriginalFilename(), "") + session.getId();
+        System.out.println("pathToFolder = " + pathToFolder);
+        if (!Files.isDirectory(Paths.get(pathToFolder + session.getId()))){
+//            new File(pathToFolder + session.getId()).mkdir();
+            System.out.println("nie ma folderu");
+        }else {
+            System.out.println("jest folder");
+        }
+//        new File(pathToFolder + session.getId()).mkdir();
+        new File(pathToFolder).mkdir();
+        System.out.println("pathToFolder = " + pathToFolder);
         File[] files = new File[multipartFile.length];
         for (int i = 0; i < multipartFile.length; i++){
-            files[i] = new File(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
+//            files[i] = new File(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
+            files[i] = Paths.get(pathToFolder, multipartFile[i].getOriginalFilename()).toFile();
+            System.out.println("files path " + files[i]);
 //            files[i] = new File("src/main/resources/temp/" + multipartFile[i].getOriginalFilename());
 //            files[i] = new File("C:\\Users\\mateu\\Desktop\\Nowy folder\\pdf to excel\\t\\" + multipartFile[i].getOriginalFilename());
 //            files[i] = new File(multipartFiles[i].getOriginalFilename());
