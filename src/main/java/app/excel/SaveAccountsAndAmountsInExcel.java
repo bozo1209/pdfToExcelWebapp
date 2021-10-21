@@ -48,6 +48,9 @@ public class SaveAccountsAndAmountsInExcel {
         FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
         int rowNumber = 1;
         for (CustomPair<String, BigDecimal> pair : accountsAndAmountsList){
+            if (pair == null){
+                continue;
+            }
             row = sheet.createRow(rowNumber);
             cell = row.createCell(0);
             cell.setCellValue("'" + pair.getAccount());
@@ -68,5 +71,9 @@ public class SaveAccountsAndAmountsInExcel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getExcelName() {
+        return excelName;
     }
 }
