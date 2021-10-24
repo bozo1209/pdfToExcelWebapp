@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.excel.SaveAccountsAndAmountsInExcel;
 import app.pdf.ExtractsAccountsAndAmounts;
+import app.services.HomeService;
 import app.utilities.interfaces.CustomPair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -35,6 +36,13 @@ import java.util.stream.Collectors;
 @Controller
 public class HomeController {
 
+    private HomeService homeService;
+
+    @Autowired
+    public HomeController(HomeService homeService){
+        this.homeService = homeService;
+    }
+
 //    private Model model;
 //    private RedirectAttributes model;
 //
@@ -58,53 +66,59 @@ public class HomeController {
     public String getHome(HttpSession session
             , Model model
     ){
-        if (filesMapWithSessionId == null){
-            System.out.println("filesMapWithSessionId == null");
-            filesMapWithSessionId = new HashMap<>();
-        }
-        if (filesMapWithSessionId.get(session.getId()) == null
-//                || filesMapWithSessionId.get(session.getId())[0].isEmpty()
-        ){
-            System.out.println("filesMapWithSessionId.get(session.getId()) == null");
-            filesMapWithSessionId.put(session.getId(), new ArrayList<>());
-//            model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
-//            model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
-//            session.setAttribute("files", filesMapWithSessionId.get(session.getId()));
-        }
-
-//        model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
-//        model.getFlashAttributes();
-//        System.out.println("model.getFlashAttributes() " + model.getFlashAttributes());
-        System.out.println("session.getId() = " + session.getId());
-        if (filesMapWithSessionId.get(session.getId()) != null){
-            System.out.println("ffffffffff");
-            for (int i = 0; i < filesMapWithSessionId.get(session.getId()).size(); i++){
-                System.out.println("multipartFile[" + i + "] " + filesMapWithSessionId.get(session.getId()).get(i).getName());
-//                System.out.println("multipartFile[" + i + "] " + filesMapWithSessionId.get(session.getId()).get(i).getOriginalFilename());
-            }
-//            if (!arrayIsEmptyOrNull(filesMapWithSessionId.get(session.getId()).toArray((new MultipartFile[0])))){
-//                model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
+        homeService.getHomeController(session, model);
+//        if (filesMapWithSessionId == null){
+//            System.out.println("filesMapWithSessionId == null");
+//            filesMapWithSessionId = new HashMap<>();
+//        }
+//        if (filesMapWithSessionId.get(session.getId()) == null
+////                || filesMapWithSessionId.get(session.getId())[0].isEmpty()
+//        ){
+//            System.out.println("filesMapWithSessionId.get(session.getId()) == null");
+//            filesMapWithSessionId.put(session.getId(), new ArrayList<>());
+////            model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
+////            model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
+////            session.setAttribute("files", filesMapWithSessionId.get(session.getId()));
+//        }
+//
+////        model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
+////        model.getFlashAttributes();
+////        System.out.println("model.getFlashAttributes() " + model.getFlashAttributes());
+//        System.out.println("session.getId() = " + session.getId());
+//        if (filesMapWithSessionId.get(session.getId()) != null){
+//            System.out.println("ffffffffff");
+//            for (int i = 0; i < filesMapWithSessionId.get(session.getId()).size(); i++){
+//                System.out.println("multipartFile[" + i + "] " + filesMapWithSessionId.get(session.getId()).get(i).getName());
+////                System.out.println("multipartFile[" + i + "] " + filesMapWithSessionId.get(session.getId()).get(i).getOriginalFilename());
 //            }
-            System.out.println("lllllllllll");
-            model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
+////            if (!arrayIsEmptyOrNull(filesMapWithSessionId.get(session.getId()).toArray((new MultipartFile[0])))){
+////                model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
+////            }
+//            System.out.println("lllllllllll");
 //            model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
-//            model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
-        }
-        //        filesMapWithSessionId.put(session.getId(), null);
-//        String[] text = {"jeden", "dwa"};
-//        filesMapWithSessionId.put(session.getId(), text);
-//        String[] test = null;
-//        System.out.println(test[0]);
-//        if (test == null){
-//            System.out.println("asdfsfdsf");
+////            model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
+////            model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
 //        }
-//        if (filesMapWithSessionId.get(session.getId()) == null){
-//            model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
-//        }
+//        //        filesMapWithSessionId.put(session.getId(), null);
+////        String[] text = {"jeden", "dwa"};
+////        filesMapWithSessionId.put(session.getId(), text);
+////        String[] test = null;
+////        System.out.println(test[0]);
+////        if (test == null){
+////            System.out.println("asdfsfdsf");
+////        }
+////        if (filesMapWithSessionId.get(session.getId()) == null){
+////            model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
+////        }
 
 
         return "/home.html";
 //        return new ModelAndView("/home.html", model)
+    }
+
+    public String totylkotest(){
+        System.out.println("totylkotest()");
+        return "redirect:/home";
     }
 
     @PostMapping(path = "/uploadFile")
@@ -114,100 +128,104 @@ public class HomeController {
             , HttpSession session
             , RedirectAttributes model
     ){
-        String pathToFile;
-        System.out.println("lklllllllllllll");
-        for (int i = 0; i < multipartFile.length; i++){
-            System.out.println("multipartFile[" + i + "] " + multipartFile[i].getName());
-            System.out.println(multipartFile[i].getName());
-            System.out.println(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
-        }
+        homeService.submitService(multipartFile, session, model);
+//        homeService.test(multipartFile, session);
+//        homeService.getPathToPlaceWhereWillBeCreatedFolderForSessionIdFolder(multipartFile, session);
+//        totylkotest();
+//        String pathToFile;
+//        System.out.println("lklllllllllllll");
 //        for (int i = 0; i < multipartFile.length; i++){
-//            System.out.println("multipartFile[" + i + "] " + multipartFile[i].getOriginalFilename());
-//
+//            System.out.println("multipartFile[" + i + "] " + multipartFile[i].getName());
+//            System.out.println(multipartFile[i].getName());
+//            System.out.println(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
 //        }
-//        if (multipartFile[0].getName().equals("")){
+////        for (int i = 0; i < multipartFile.length; i++){
+////            System.out.println("multipartFile[" + i + "] " + multipartFile[i].getOriginalFilename());
+////
+////        }
+////        if (multipartFile[0].getName().equals("")){
+////            return "redirect:/home";
+////        }
+//        System.out.println("multipartFile.length = " + multipartFile.length);
+//        System.out.println("multipartFile[0] = " + multipartFile[0].isEmpty());
+//        System.out.println("multipartFile[0] = " );
+//        if (multipartFile.length == 0){
+//            System.out.println("multipartFile.length = " + multipartFile.length);
 //            return "redirect:/home";
 //        }
-        System.out.println("multipartFile.length = " + multipartFile.length);
-        System.out.println("multipartFile[0] = " + multipartFile[0].isEmpty());
-        System.out.println("multipartFile[0] = " );
-        if (multipartFile.length == 0){
-            System.out.println("multipartFile.length = " + multipartFile.length);
-            return "redirect:/home";
-        }
-        if (multipartFile[0].getOriginalFilename().equals("")){
-            return "redirect:/home";
-        }
-        pathToFile = session.getServletContext().getRealPath(multipartFile[0].getOriginalFilename());
-        System.out.println("pathToFile = " + pathToFile);
-        String pathToFolder = pathToFile.replaceAll(multipartFile[0].getOriginalFilename(), "") + session.getId();
-        System.out.println("pathToFolder = " + pathToFolder);
-        if (!Files.isDirectory(Paths.get(pathToFolder + session.getId()))){
-//            new File(pathToFolder + session.getId()).mkdir();
-            System.out.println("nie ma folderu");
-        }else {
-            System.out.println("jest folder");
-        }
-//        new File(pathToFolder + session.getId()).mkdir();
-        new File(pathToFolder).mkdir();
-        System.out.println("pathToFolder = " + pathToFolder);
-        File[] files = new File[multipartFile.length];
-        for (int i = 0; i < multipartFile.length; i++){
-//            files[i] = new File(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
-            files[i] = Paths.get(pathToFolder, multipartFile[i].getOriginalFilename()).toFile();
-            System.out.println("files path " + files[i]);
-//            files[i] = new File("src/main/resources/temp/" + multipartFile[i].getOriginalFilename());
-//            files[i] = new File("C:\\Users\\mateu\\Desktop\\Nowy folder\\pdf to excel\\t\\" + multipartFile[i].getOriginalFilename());
-//            files[i] = new File(multipartFiles[i].getOriginalFilename());
-            try {
-                multipartFile[i].transferTo(files[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("*****************");
-//        if (!arrayIsEmptyOrNull(multipartFile)) {
-            if (filesMapWithSessionId.get(session.getId()) != null) {
-//            if (!arrayIsEmptyOrNull(filesMapWithSessionId.get(session.getId()).toArray(new MultipartFile[0]))) {
-                System.out.println("11111111111");
-//            MultipartFile[] multipartFilesCombined = combineTwoArrays(filesMapWithSessionId.get(session.getId()), multipartFile);
-//            filesMapWithSessionId.replace(session.getId(), multipartFilesCombined);
-//                File[] testFile = new File[multipartFile.length];
-//                for (int i = 0; i < multipartFile.length; i++){
-//                    testFile[i] = new File(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
-//                }
-//                filesMapWithSessionId.replace(session.getId(), addsTwoLists(filesMapWithSessionId.get(session.getId()), arrayToList(multipartFile)));
-//                filesMapWithSessionId.replace(session.getId(), addsTwoLists(filesMapWithSessionId.get(session.getId()), arrayToList(multipartFile)));
-                filesMapWithSessionId.replace(session.getId(), addsTwoLists(filesMapWithSessionId.get(session.getId()), arrayToList(files)));
-
-            } else {
-                System.out.println("222222222");
-//            filesMapWithSessionId.replace(session.getId(), multipartFile);
-//                filesMapWithSessionId.replace(session.getId(), arrayToList(multipartFile));
-                filesMapWithSessionId.replace(session.getId(), arrayToList(files));
-            }
-//            model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
+//        if (multipartFile[0].getOriginalFilename().equals("")){
+//            return "redirect:/home";
 //        }
-//        File[] testFile = new File[multipartFile.length];
+//        pathToFile = session.getServletContext().getRealPath(multipartFile[0].getOriginalFilename());
+//        System.out.println("pathToFile = " + pathToFile);
+//        String pathToFolder = pathToFile.replaceAll(multipartFile[0].getOriginalFilename(), "") + session.getId();
+//        System.out.println("pathToFolder = " + pathToFolder);
+//        if (!Files.isDirectory(Paths.get(pathToFolder + session.getId()))){
+////            new File(pathToFolder + session.getId()).mkdir();
+//            System.out.println("nie ma folderu");
+//        }else {
+//            System.out.println("jest folder");
+//        }
+////        new File(pathToFolder + session.getId()).mkdir();
+//        new File(pathToFolder).mkdir();
+//        System.out.println("pathToFolder = " + pathToFolder);
+//        File[] files = new File[multipartFile.length];
 //        for (int i = 0; i < multipartFile.length; i++){
-//            testFile[i] = new File(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
+////            files[i] = new File(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
+//            files[i] = Paths.get(pathToFolder, multipartFile[i].getOriginalFilename()).toFile();
+//            System.out.println("files path " + files[i]);
+////            files[i] = new File("src/main/resources/temp/" + multipartFile[i].getOriginalFilename());
+////            files[i] = new File("C:\\Users\\mateu\\Desktop\\Nowy folder\\pdf to excel\\t\\" + multipartFile[i].getOriginalFilename());
+////            files[i] = new File(multipartFiles[i].getOriginalFilename());
+//            try {
+//                multipartFile[i].transferTo(files[i]);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 //        }
-//        model.addFlashAttribute("files", testFile);
-        model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
-//        filesMapWithSessionId.replace(session.getId(), multipartFile);
-//        filesMapWithSessionId.replace(session.getId(), multipartFile);
-//        model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
+//        System.out.println("*****************");
+////        if (!arrayIsEmptyOrNull(multipartFile)) {
+//            if (filesMapWithSessionId.get(session.getId()) != null) {
+////            if (!arrayIsEmptyOrNull(filesMapWithSessionId.get(session.getId()).toArray(new MultipartFile[0]))) {
+//                System.out.println("11111111111");
+////            MultipartFile[] multipartFilesCombined = combineTwoArrays(filesMapWithSessionId.get(session.getId()), multipartFile);
+////            filesMapWithSessionId.replace(session.getId(), multipartFilesCombined);
+////                File[] testFile = new File[multipartFile.length];
+////                for (int i = 0; i < multipartFile.length; i++){
+////                    testFile[i] = new File(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
+////                }
+////                filesMapWithSessionId.replace(session.getId(), addsTwoLists(filesMapWithSessionId.get(session.getId()), arrayToList(multipartFile)));
+////                filesMapWithSessionId.replace(session.getId(), addsTwoLists(filesMapWithSessionId.get(session.getId()), arrayToList(multipartFile)));
+//                filesMapWithSessionId.replace(session.getId(), addsTwoLists(filesMapWithSessionId.get(session.getId()), arrayToList(files)));
+//
+//            } else {
+//                System.out.println("222222222");
+////            filesMapWithSessionId.replace(session.getId(), multipartFile);
+////                filesMapWithSessionId.replace(session.getId(), arrayToList(multipartFile));
+//                filesMapWithSessionId.replace(session.getId(), arrayToList(files));
+//            }
+////            model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
+////        }
+////        File[] testFile = new File[multipartFile.length];
+////        for (int i = 0; i < multipartFile.length; i++){
+////            testFile[i] = new File(session.getServletContext().getRealPath(multipartFile[i].getOriginalFilename()));
+////        }
+////        model.addFlashAttribute("files", testFile);
 //        model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
-//        session.setAttribute("files", filesMapWithSessionId.get(session.getId()));
-        for (int i = 0; i < multipartFile.length; i++){
-//            System.out.println("multipartFile[" + i + "] " + multipartFile[i].getOriginalFilename());
-            System.out.println(multipartFile[i].getName());
-        }
-
-        for (int i = 0; i < filesMapWithSessionId.get(session.getId()).size(); i++){
-            System.out.println("filesMapWithSessionId.get(session.getId()).get(" + i + ")" + filesMapWithSessionId.get(session.getId()).get(i).getName());
-//            System.out.println("filesMapWithSessionId.get(session.getId()).get(" + i + ")" + filesMapWithSessionId.get(session.getId()).get(i).getOriginalFilename());
-        }
+////        filesMapWithSessionId.replace(session.getId(), multipartFile);
+////        filesMapWithSessionId.replace(session.getId(), multipartFile);
+////        model.addAttribute("files", filesMapWithSessionId.get(session.getId()));
+////        model.addFlashAttribute("files", filesMapWithSessionId.get(session.getId()));
+////        session.setAttribute("files", filesMapWithSessionId.get(session.getId()));
+//        for (int i = 0; i < multipartFile.length; i++){
+////            System.out.println("multipartFile[" + i + "] " + multipartFile[i].getOriginalFilename());
+//            System.out.println(multipartFile[i].getName());
+//        }
+//
+//        for (int i = 0; i < filesMapWithSessionId.get(session.getId()).size(); i++){
+//            System.out.println("filesMapWithSessionId.get(session.getId()).get(" + i + ")" + filesMapWithSessionId.get(session.getId()).get(i).getName());
+////            System.out.println("filesMapWithSessionId.get(session.getId()).get(" + i + ")" + filesMapWithSessionId.get(session.getId()).get(i).getOriginalFilename());
+//        }
 
 
         return "redirect:/home";
