@@ -12,26 +12,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.math.BigDecimal;
-import java.net.URLConnection;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -66,7 +58,7 @@ public class HomeController {
     public String getHome(HttpSession session
             , Model model
     ){
-        homeService.getHomeController(session, model);
+        homeService.getHomeService(session, model);
 //        if (filesMapWithSessionId == null){
 //            System.out.println("filesMapWithSessionId == null");
 //            filesMapWithSessionId = new HashMap<>();
@@ -233,63 +225,65 @@ public class HomeController {
     }
 
     @GetMapping(path = "/generateExcel")
-    public ResponseEntity<Resource> downloadTest(HttpSession session
+    public ResponseEntity<Resource> downloadExcel(HttpSession session
 //            , HttpServletRequest request, HttpServletResponse response
     ) throws IOException {
         System.out.println("*****************");
         System.out.println("downloadTest(HttpSession session)");
-        ExtractsAccountsAndAmounts extractsAccountsAndAmounts = new ExtractsAccountsAndAmounts();
-        SaveAccountsAndAmountsInExcel saveAccountsAndAmountsInExcel = new SaveAccountsAndAmountsInExcel();
-//        MultipartFile[] multipartFiles = filesMapWithSessionId.get(session.getId()).toArray(new MultipartFile[0]);
-//        File[] files = new File[multipartFiles.length];
-//        for (int i = 0; i < multipartFiles.length; i++){
-////            files[i] = new File(session.getServletContext().getRealPath(multipartFiles[i].getOriginalFilename()));
-////            files[i] = new File("src/main/resources/temp/" + multipartFiles[i].getOriginalFilename());
-////            files[i] = new File("C:\\Users\\mateu\\Desktop\\Nowy folder\\pdf to excel\\t\\" + multipartFiles[i].getOriginalFilename());
-////            files[i] = new File(multipartFiles[i].getOriginalFilename());
-//            try {
-//                multipartFiles[i].transferTo(files[i]);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            System.out.println(files[i].getAbsolutePath());
-//        }
-        File[] files = filesMapWithSessionId.get(session.getId()).toArray(new File[0]);
-        String path = files[0].getAbsolutePath();
-        System.out.println("path = " + path);
-        String pathToFolder = path.replace(files[0].getName(), "");
-        System.out.println("pathToFolder = " + pathToFolder);
-        System.out.println("files[0].getName() = " + files[0].getName());
-//        path = files[0].getPath();
+//        ExtractsAccountsAndAmounts extractsAccountsAndAmounts = new ExtractsAccountsAndAmounts();
+//        SaveAccountsAndAmountsInExcel saveAccountsAndAmountsInExcel = new SaveAccountsAndAmountsInExcel();
+////        MultipartFile[] multipartFiles = filesMapWithSessionId.get(session.getId()).toArray(new MultipartFile[0]);
+////        File[] files = new File[multipartFiles.length];
+////        for (int i = 0; i < multipartFiles.length; i++){
+//////            files[i] = new File(session.getServletContext().getRealPath(multipartFiles[i].getOriginalFilename()));
+//////            files[i] = new File("src/main/resources/temp/" + multipartFiles[i].getOriginalFilename());
+//////            files[i] = new File("C:\\Users\\mateu\\Desktop\\Nowy folder\\pdf to excel\\t\\" + multipartFiles[i].getOriginalFilename());
+//////            files[i] = new File(multipartFiles[i].getOriginalFilename());
+////            try {
+////                multipartFiles[i].transferTo(files[i]);
+////            } catch (IOException e) {
+////                e.printStackTrace();
+////            }
+////            System.out.println(files[i].getAbsolutePath());
+////        }
+//        File[] files = filesMapWithSessionId.get(session.getId()).toArray(new File[0]);
+//        String path = files[0].getAbsolutePath();
 //        System.out.println("path = " + path);
-        ArrayList<CustomPair<String, BigDecimal>> accountsAndAmountsList = extractsAccountsAndAmounts.getAccountsAndAmountsList(files);
-        saveAccountsAndAmountsInExcel.saveInExcel(accountsAndAmountsList, pathToFolder);
-        System.out.println("excel created");
-//        saveAccountsAndAmountsInExcel.openExcel(pathToFolder);
-        extractsAccountsAndAmounts.printAccountsAndAmounts(accountsAndAmountsList);
-        File excelFile = new File(pathToFolder + saveAccountsAndAmountsInExcel.getExcelName());
-        System.out.println("saveAccountsAndAmountsInExcel.getExcelName() = " + saveAccountsAndAmountsInExcel.getExcelName());
-//        String mimeType = URLConnection.guessContentTypeFromName(excelFile.getName());
-//        if (mimeType == null){
-//            mimeType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
-//        }
-//        response.setContentType(mimeType);
-//        response.setHeader("Content-Disposition", String.format("inline; filename=\"%s\"", excelFile.getName()));
-//        response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", excelFile.getName()));
-//        response.setContentLength((int) excelFile.length());
-//        InputStream inputStream = new BufferedInputStream(new FileInputStream(excelFile));
-//        FileCopyUtils.copy(inputStream, response.getOutputStream());
-//        System.out.println("lolololol");
-//        return "redirect:/home";
+//        String pathToFolder = path.replace(files[0].getName(), "");
+//        System.out.println("pathToFolder = " + pathToFolder);
+//        System.out.println("files[0].getName() = " + files[0].getName());
+////        path = files[0].getPath();
+////        System.out.println("path = " + path);
+//        ArrayList<CustomPair<String, BigDecimal>> accountsAndAmountsList = extractsAccountsAndAmounts.getAccountsAndAmountsList(files);
+//        saveAccountsAndAmountsInExcel.saveInExcel(accountsAndAmountsList, pathToFolder);
+//        System.out.println("excel created");
+////        saveAccountsAndAmountsInExcel.openExcel(pathToFolder);
+//        extractsAccountsAndAmounts.printAccountsAndAmounts(accountsAndAmountsList);
+//        File excelFile = new File(pathToFolder + saveAccountsAndAmountsInExcel.getExcelName());
+//        System.out.println("saveAccountsAndAmountsInExcel.getExcelName() = " + saveAccountsAndAmountsInExcel.getExcelName());
+////        String mimeType = URLConnection.guessContentTypeFromName(excelFile.getName());
+////        if (mimeType == null){
+////            mimeType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+////        }
+////        response.setContentType(mimeType);
+////        response.setHeader("Content-Disposition", String.format("inline; filename=\"%s\"", excelFile.getName()));
+////        response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", excelFile.getName()));
+////        response.setContentLength((int) excelFile.length());
+////        InputStream inputStream = new BufferedInputStream(new FileInputStream(excelFile));
+////        FileCopyUtils.copy(inputStream, response.getOutputStream());
+////        System.out.println("lolololol");
+////        return "redirect:/home";
+//
+//        HttpHeaders header = new HttpHeaders();
+//        header.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", excelFile.getName()));
+//        ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(Paths.get(excelFile.getAbsolutePath())));
+//        return ResponseEntity.ok()
+//                .headers(header)
+//                .contentLength(excelFile.length())
+//                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                .body(byteArrayResource);
 
-        HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", excelFile.getName()));
-        ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(Paths.get(excelFile.getAbsolutePath())));
-        return ResponseEntity.ok()
-                .headers(header)
-                .contentLength(excelFile.length())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(byteArrayResource);
+        return homeService.downloadExcelService(session);
     }
 
     public List<File> arrayToList(File[] multipartFiles){

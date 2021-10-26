@@ -1,5 +1,13 @@
 package app.services;
 
+import app.excel.SaveAccountsAndAmountsInExcel;
+import app.pdf.ExtractsAccountsAndAmounts;
+import app.utilities.interfaces.CustomPair;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -18,7 +28,7 @@ public class HomeService {
     private final String ATTRIBUTE_FILES_NAME = "files";
     private final String REDIRECT_HOME = "redirect:/home";
 
-    public void getHomeController(HttpSession session, Model model){
+    public void getHomeService(HttpSession session, Model model){
         createFilesMap(session);
         createNewSessionIdKey(session);
         addFilesListOfSessionIdToModel(session, model, null);
@@ -27,6 +37,10 @@ public class HomeService {
     public void submitService(MultipartFile[] multipartFiles, HttpSession session, RedirectAttributes redirectModel){
         addFilesToMapOfLists(multipartFiles, session);
         addFilesListOfSessionIdToModel(session, null, redirectModel);
+    }
+
+    public ResponseEntity<Resource> downloadExcelService(HttpSession session) throws IOException{
+        return createResponse(session);
     }
 
     private void createFilesMap(HttpSession session){
@@ -64,9 +78,15 @@ public class HomeService {
 //        redirectHome2();
 //    }
 
+//    private void redirectHome3(){
+//        return;
+//    }
+
     private String getPathToPlaceWhereWillBeCreatedFolderForSessionIdFolder(MultipartFile[] multipartFiles, HttpSession session){
         if (multipartFiles[0].getOriginalFilename().equals("")){
-            return REDIRECT_HOME;
+//            return REDIRECT_HOME;
+            return null;
+//            redirectHome3();
         }
         String pathToFile = session.getServletContext().getRealPath(multipartFiles[0].getOriginalFilename());
         return pathToFile.replaceAll(multipartFiles[0].getOriginalFilename(), "") + session.getId();
@@ -78,7 +98,10 @@ public class HomeService {
 
     private File[] createFileArray(MultipartFile[] multipartFiles, HttpSession session){
         String path = getPathToPlaceWhereWillBeCreatedFolderForSessionIdFolder(multipartFiles, session);
-        if (path.equals(REDIRECT_HOME)){
+//        if (path.equals(REDIRECT_HOME)){
+//            return null;
+//        }
+        if (path == null){
             return null;
         }
         createSessionIdFolder(path);
@@ -109,6 +132,36 @@ public class HomeService {
                     )
             );
         }
+    }
+
+    private File[] getFilesFromListBySessionIdFromMap(HttpSession session){
+        return filesMapWithSessionId.get(session.getId()).toArray(new File[0]);
+    }
+
+    private String getPathToSessionIdFolder(File[] files){
+        return files[0].getAbsolutePath().replace(files[0].getName(), "");
+    }
+
+    private File createExcelFile(HttpSession session){
+        ExtractsAccountsAndAmounts extractsAccountsAndAmounts = new ExtractsAccountsAndAmounts();
+        SaveAccountsAndAmountsInExcel saveAccountsAndAmountsInExcel = new SaveAccountsAndAmountsInExcel();
+        File[] files = getFilesFromListBySessionIdFromMap(session);
+        String pathToSessionIdFolder = getPathToSessionIdFolder(files);
+        ArrayList<CustomPair<String, BigDecimal>> accountsAndAmountsList = extractsAccountsAndAmounts.getAccountsAndAmountsList(files);
+        saveAccountsAndAmountsInExcel.saveInExcel(accountsAndAmountsList, pathToSessionIdFolder);
+        return new File(pathToSessionIdFolder + saveAccountsAndAmountsInExcel.getExcelName());
+    }
+
+    private ResponseEntity<Resource> createResponse(HttpSession session) throws IOException{
+        File excelFile = createExcelFile(session);
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=\"%s\"", excelFile.getName()));
+        ByteArrayResource byteArrayResource = new ByteArrayResource(Files.readAllBytes(Paths.get(excelFile.getAbsolutePath())));
+        return ResponseEntity.ok()
+                .headers(header)
+                .contentLength(excelFile.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(byteArrayResource);
     }
 
     private List<File> arrayToList(File[] multipartFiles){
