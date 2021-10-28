@@ -104,7 +104,7 @@ public class HomeController {
 ////        }
 
 
-        return "/home.html";
+        return "home.html";
 //        return new ModelAndView("/home.html", model)
     }
 
