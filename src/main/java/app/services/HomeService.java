@@ -3,6 +3,7 @@ package app.services;
 import app.excel.SaveAccountsAndAmountsInExcel;
 import app.pdf.ExtractsAccountsAndAmounts;
 import app.utilities.interfaces.CustomPair;
+import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -41,6 +42,24 @@ public class HomeService {
 
     public ResponseEntity<Resource> downloadExcelService(HttpSession session) throws IOException{
         return createResponse(session);
+    }
+
+    public void deleteSessionFolderService(HttpSession session){
+        deleteSessionFolder(session);
+    }
+
+    public void deleteFileService(String fileName, HttpSession session){
+        deleteFile(fileName, session);
+    }
+
+    public void test(HttpSession session){
+        List<File> files = filesMapWithSessionId.get(session.getId());
+        for (File file : files){
+//            String absolutePath = file.getAbsolutePath();
+            String absolutePath = file.getName();
+            System.out.println(absolutePath);
+            deleteFile(absolutePath, session);
+        }
     }
 
     private void createFilesMap(HttpSession session){
@@ -107,6 +126,8 @@ public class HomeService {
         createSessionIdFolder(path);
         File[] files = new File[multipartFiles.length];
         for (int i = 0; i < multipartFiles.length; i++){
+            System.out.println("multipartFiles[i].getOriginalFilename() = " + multipartFiles[i].getOriginalFilename());
+            System.out.println("Paths.get(path, multipartFiles[i].getOriginalFilename()).toString() = " + Paths.get(path, multipartFiles[i].getOriginalFilename()).toString());
             files[i] = Paths.get(path, multipartFiles[i].getOriginalFilename()).toFile();
             try {
                 multipartFiles[i].transferTo(files[i]);
@@ -162,6 +183,44 @@ public class HomeService {
                 .contentLength(excelFile.length())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(byteArrayResource);
+    }
+
+    private void deleteFile(String fileName, HttpSession session){
+        int i = -1;
+
+//        List<File> files = filesMapWithSessionId.get(session.getId());
+
+        for (File file : filesMapWithSessionId.get(session.getId())){
+            if (file.getName().equals(fileName)){
+                i = filesMapWithSessionId.get(session.getId()).indexOf(file);
+                file.delete();
+                break;
+            }
+        }
+
+        System.out.println("index to delete: " + i);
+        filesMapWithSessionId.get(session.getId()).remove(i);
+
+    }
+
+    private void deleteSessionFolder(HttpSession session){
+        String realPath = session.getServletContext().getRealPath(session.getId());
+//        System.out.println("realPath = " + realPath);
+        File folder = new File(realPath);
+        if(folder.isDirectory()){
+            System.out.println("realPath = " + realPath);
+//            boolean delete = folder.delete();
+//            System.out.println("delete = " + delete);
+            try {
+                FileUtils.deleteDirectory(folder);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            filesMapWithSessionId.remove(session.getId());
+        }else {
+            System.out.println("nope");
+        }
     }
 
     private List<File> arrayToList(File[] multipartFiles){

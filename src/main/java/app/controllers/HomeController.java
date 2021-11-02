@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -284,6 +285,25 @@ public class HomeController {
 //                .body(byteArrayResource);
 
         return homeService.downloadExcelService(session);
+    }
+
+    @GetMapping(path = "/deleteSessionFolder")
+    public String deleteSessionFolder(HttpSession session){
+        homeService.deleteSessionFolderService(session);
+        return "redirect:/home";
+    }
+
+//    @GetMapping(path = "/deleteFile/{filename}")
+//    @GetMapping(path = "/deleteFile")
+    @PostMapping(path = "/deleteFile")
+    public String deleteFile(
+            @RequestParam(name = "filename") String filename,
+//            @PathVariable String filename,
+            HttpSession session){
+//        homeService.test(session);
+//        String fileAbsolutePath = "test";
+        homeService.deleteFileService(filename, session);
+        return "redirect:/home";
     }
 
     public List<File> arrayToList(File[] multipartFiles){
