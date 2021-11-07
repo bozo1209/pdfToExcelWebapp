@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>file table</title>
+</head>
+<body>
+<div th:fragment="fileTable">
+    <table>
+        <tr>
+            <th>
+                PDF file name
+            </th>
+            <th>
+                Action button
+            </th>
+        </tr>
+        <tr th:each="file : ${files}">
+            <td>
+                [[${file.getName()}]]
+                <!--                    [[${file.getAbsolutePath()}]]-->
+            </td>
+            <td>
+                <form th:action="@{/deleteFile(filename=${file.getName()})}" method="post">
+                    <button type="submit" title="delete this file">delete</button>
+                </form>
+                <!--                    <form th:action="@{/deleteFile/{fileName}(fileName=${file.getName()})}" method="get">-->
+                <!--                        <button type="submit" title="delete this file">delete</button>-->
+                <!--                    </form>-->
+                <!--                    file.getAbsolutePath()-->
+                <!--                    [[@{/deleteFile/{fileAbsolutePath}(fileAbsolutePath=${file.getAbsolutePath()})}]]-->
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

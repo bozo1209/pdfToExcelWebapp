@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/update}" method="post">
+        <input type="text" name="text">
+        <button type="submit" onclick="test()">submit</button>
+    </form>
+    <br><br><br><br><br>
+    <input id="textid" type="text" name="text">
+    <button type="submit" onclick="test2(document.getElementById('textid').value)">submit</button>
+</div>
+<br><br><br><br><br>
+<div>
+    <table>
+        <tr>
+            <th>
+                title
+            </th>
+        </tr>
+        <tr th:each="text : ${textList}">
+            <td th:inline="text">
+                [[${text}]]
+            </td>
+        </tr>
+    </table>
+</div>
+<script th:inline="javascript">
+    function test(){
+        var url = "http://localhost:8080/resttext";
+        var url2 = /*[[@{/text}]]*/ "";
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", url, false );
+        xmlHttp.send( null );
+
+        var res = xmlHttp.responseText;
+
+        var test1 = /*[[${textList}]]*/ ["i", "o"];
+
+        alert(test1[0]);
+        alert(res);
+
+        var test2 = /*[[${textList}]]*/ ["i", "o"];
+        alert(test2[0]);
+    };
+
+
+    function test2(t){
+        alert(t);
+        var url = "http://localhost:8080/restupdate";
+        var xmlHttp = new XMLHttpRequest();
+        var formData = new FormData();
+        formData.append("text",t);
+        xmlHttp.onreadystatechange = state => { console.log(xmlHttp.status); }
+        xmlHttp.open("POST", url, false);
+        xmlHttp.send(formData);
+
+        url = "http://localhost:8080/resttext";
+        xmlHttp.open( "GET", url, false );
+        xmlHttp.send( null );
+
+
+        var res = xmlHttp.responseText;
+        alert(res);
+
+    };
+</script>
+</body>
+</html>
