@@ -21,9 +21,12 @@ public class TextUpdateRESTController {
 
 
     @GetMapping(path = "/resttext")
-    public List<String> getRESTText(){
+    public TextService getRESTText(Model model){
         System.out.println("tutaj");
-        return textService.getTextList();
+        List<String> textList = textService.getTextList();
+//        model.addAttribute("textList", textService.getTextList());
+        return textService;
+//        return textList;
     }
 
     @PostMapping(path = "/restupdate")

@@ -11,12 +11,23 @@
         <button type="submit" onclick="test()">submit</button>
     </form>
     <br><br><br><br><br>
+    <p>ten</p>
     <input id="textid" type="text" name="text">
     <button type="submit" onclick="test2(document.getElementById('textid').value)">submit</button>
+    <br><br><br><br><br>
+    <form th:action="@{/update}" method="post">
+        <input id="textid2" type="text" name="text">
+        <button type="submit" onclick="test3(this)">submit</button>
+    </form>
+    <br><br><br><br><br>
+    <form>
+        <input id="textid3" type="text" name="text">
+        <button type="submit" onclick="test2(document.getElementById('textid').value)">submit</button>
+    </form>
 </div>
 <br><br><br><br><br>
 <div>
-    <table>
+    <table id="myTable">
         <tr>
             <th>
                 title
@@ -56,16 +67,87 @@
         var formData = new FormData();
         formData.append("text",t);
         xmlHttp.onreadystatechange = state => { console.log(xmlHttp.status); }
-        xmlHttp.open("POST", url, false);
+        xmlHttp.open("POST", '/restupdate', false);
         xmlHttp.send(formData);
 
         url = "http://localhost:8080/resttext";
-        xmlHttp.open( "GET", url, false );
+        xmlHttp.open( "GET", '/resttext', false );
         xmlHttp.send( null );
 
 
         var res = xmlHttp.responseText;
-        alert(res);
+        alert("res " + res);
+
+        var obj = JSON.parse(res);
+        for(let i = 0; i < obj.textList.length; i++){
+            alert("obj.textList[" + i + "] : " + obj.textList[i]);
+        }
+
+        var test1 = /*[[${textList}]]*/ ["i", "o"];
+        alert("test1[0] " + test1[0]);
+        alert("test1 " + test1);
+
+        var remove = res.replace('[', '').replace(']','').replace('"','');
+        var remove2 = res.replace('[', '').replace(']','').split('"').join('');
+        alert("remove " + remove);
+        alert("remove2 " + remove2);
+        var arr = remove.split(',');
+        alert("arr[0] " + arr[0])
+        var arr2 = remove2.split(',');
+        alert("arr2[0] " + arr2[0])
+
+        var table = document.getElementById("myTable");
+        var row = document.createElement('tr');
+        var col = document.createElement('td');
+        row.appendChild(col);
+
+        col.innerHTML = obj.textList[obj.textList.length - 1];
+        table.appendChild(row);
+
+        document.getElementById("textid").value = "";
+
+    };
+
+    function test3(t){
+        alert(t);
+        alert(t.value);
+        alert(t.text);
+
+        var xmlHttp = new XMLHttpRequest();
+        var url = "http://localhost:8080/resttext";
+        xmlHttp.open( "GET", '/resttext', false );
+        xmlHttp.send( null );
+
+
+        var res = xmlHttp.responseText;
+        alert("res " + res);
+
+        var obj = JSON.parse(res);
+        for(let i = 0; i < obj.textList.length; i++){
+            alert("obj.textList[" + i + "] : " + obj.textList[i]);
+        }
+
+        var test1 = /*[[${textList}]]*/ ["i", "o"];
+        alert("test1[0] " + test1[0]);
+        alert("test1 " + test1);
+
+        var remove = res.replace('[', '').replace(']','').replace('"','');
+        var remove2 = res.replace('[', '').replace(']','').split('"').join('');
+        alert("remove " + remove);
+        alert("remove2 " + remove2);
+        var arr = remove.split(',');
+        alert("arr[0] " + arr[0])
+        var arr2 = remove2.split(',');
+        alert("arr2[0] " + arr2[0])
+
+        var table = document.getElementById("myTable");
+        var row = document.createElement('tr');
+        var col = document.createElement('td');
+        row.appendChild(col);
+        col.innerHTML = arr2[arr2.length - 1];
+        table.appendChild(row);
+
+
 
     };
 </script>

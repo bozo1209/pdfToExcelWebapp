@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <title>Saving Accounts And Amounts In Excel</title>
     <link rel="stylesheet" href="/home.css">
+    <script src="/home.js"></script>
 <!--    <link rel="import" href="/fileTable.html">-->
 </head>
 <body>
 <div>
     <div>
         <div>
-            <form class="formWithButtons" action="#" th:action="@{/uploadFile}" enctype="multipart/form-data" method="post">
-                <div>
-                    <input type="file" name="files" multiple>
-                    <input type="submit" value="add">
+<!--            <form class="formWithButtons" action="#" th:action="@{/uploadFile}" enctype="multipart/form-data" method="post">-->
+                <div class="formWithButtons">
+                    <input id="filesId" type="file" name="files" multiple>
+                    <input type="submit" value="add" onclick="add(document.getElementById('filesId'))">
                 </div>
-            </form>
+<!--            </form>-->
             <form class="formWithButtons" action="#" th:action="@{/generateExcel}" method="get">
                 <input type="submit" value="download Excel">
             </form>
@@ -24,6 +25,7 @@
             </form>
         </div>
         <div>
+            <button onclick="test()">click</button>
         </div>
     </div>
 <!--    <div>-->
@@ -32,7 +34,7 @@
 <!--    </div>-->
     <div th:insert="fileTable :: fileTable"></div>
     <div>
-        <table>
+        <table id="pdfFileTable">
             <tr>
                 <th>
                     PDF file name

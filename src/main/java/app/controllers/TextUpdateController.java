@@ -43,6 +43,7 @@ public class TextUpdateController {
     @PostMapping(path = "/update")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateList(@RequestParam(name = "text") String text, RedirectAttributes redirectAttributes, Model model){
+        System.out.println("text = " + text);
         textService.addElement(text);
         model.addAttribute("textList", textService.getTextList());
         redirectAttributes.addFlashAttribute("textList", textService.getTextList());
@@ -59,9 +60,9 @@ public class TextUpdateController {
 //    }
 
     @GetMapping("/ss")
-    public Model ss(Model model){
+    public TextService ss(Model model){
         model.addAttribute("test", "test");
-        return model;
+        return textService;
     }
 
 

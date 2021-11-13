@@ -35,9 +35,20 @@ public class HomeService {
         addFilesListOfSessionIdToModel(session, model, null);
     }
 
+    public List<File> getHomeRESTService(HttpSession session){
+        createFilesMap(session);
+        createNewSessionIdKey(session);
+//        return getFilesFromListBySessionIdFromMap(session);
+        return filesMapWithSessionId.get(session.getId());
+    }
+
     public void submitService(MultipartFile[] multipartFiles, HttpSession session, RedirectAttributes redirectModel){
         addFilesToMapOfLists(multipartFiles, session);
         addFilesListOfSessionIdToModel(session, null, redirectModel);
+    }
+
+    public void submitRESTService(MultipartFile[] multipartFiles, HttpSession session){
+        addFilesToMapOfLists(multipartFiles, session);
     }
 
     public ResponseEntity<Resource> downloadExcelService(HttpSession session) throws IOException{

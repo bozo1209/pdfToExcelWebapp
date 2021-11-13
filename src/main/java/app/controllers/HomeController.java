@@ -304,6 +304,7 @@ public class HomeController {
             HttpSession session){
 //        homeService.test(session);
 //        String fileAbsolutePath = "test";
+        System.out.println("session = " + session.getId());
         homeService.deleteFileService(filename, session);
         return "redirect:/home";
     }
