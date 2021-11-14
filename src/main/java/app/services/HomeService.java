@@ -48,7 +48,12 @@ public class HomeService {
     }
 
     public void submitRESTService(MultipartFile[] multipartFiles, HttpSession session){
+//        System.out.println(filesMapWithSessionId.get(session.getId()).size());
+        createNewSessionIdKey(session);
         addFilesToMapOfLists(multipartFiles, session);
+//        System.out.println("****** po ***");
+//        System.out.println(filesMapWithSessionId.get(session.getId()).size());
+//        System.out.println(filesMapWithSessionId.get(session.getId()).get(0));
     }
 
     public ResponseEntity<Resource> downloadExcelService(HttpSession session) throws IOException{
@@ -123,6 +128,7 @@ public class HomeService {
     }
 
     private void createSessionIdFolder(String path){
+//        System.out.println("create folder");
         new File(path).mkdir();
     }
 
@@ -137,8 +143,8 @@ public class HomeService {
         createSessionIdFolder(path);
         File[] files = new File[multipartFiles.length];
         for (int i = 0; i < multipartFiles.length; i++){
-            System.out.println("multipartFiles[i].getOriginalFilename() = " + multipartFiles[i].getOriginalFilename());
-            System.out.println("Paths.get(path, multipartFiles[i].getOriginalFilename()).toString() = " + Paths.get(path, multipartFiles[i].getOriginalFilename()).toString());
+//            System.out.println("multipartFiles[i].getOriginalFilename() = " + multipartFiles[i].getOriginalFilename());
+//            System.out.println("Paths.get(path, multipartFiles[i].getOriginalFilename()).toString() = " + Paths.get(path, multipartFiles[i].getOriginalFilename()).toString());
             files[i] = Paths.get(path, multipartFiles[i].getOriginalFilename()).toFile();
             try {
                 multipartFiles[i].transferTo(files[i]);
@@ -152,10 +158,12 @@ public class HomeService {
     private void addFilesToMapOfLists(MultipartFile[] multipartFiles, HttpSession session){
         File[] fileArray = createFileArray(multipartFiles, session);
         if (fileArray == null){
-            System.out.println("****null*******");
+//            System.out.println("****null*******");
             return;
         }
+//        System.out.println("fileArray[0] " + fileArray[0]);
         if (filesMapWithSessionId.get(session.getId()) != null){
+//            System.out.println("filesMapWithSessionId.get(session.getId()) != null");
             filesMapWithSessionId.replace(
                     session.getId(),
                     addsTwoLists(
@@ -164,6 +172,7 @@ public class HomeService {
                     )
             );
         }
+//        System.out.println("fileArray[0] " + fileArray[0]);
     }
 
     private File[] getFilesFromListBySessionIdFromMap(HttpSession session){
@@ -209,7 +218,7 @@ public class HomeService {
             }
         }
 
-        System.out.println("index to delete: " + i);
+//        System.out.println("index to delete: " + i);
         filesMapWithSessionId.get(session.getId()).remove(i);
 
     }
@@ -219,7 +228,7 @@ public class HomeService {
 //        System.out.println("realPath = " + realPath);
         File folder = new File(realPath);
         if(folder.isDirectory()){
-            System.out.println("realPath = " + realPath);
+//            System.out.println("realPath = " + realPath);
 //            boolean delete = folder.delete();
 //            System.out.println("delete = " + delete);
             try {

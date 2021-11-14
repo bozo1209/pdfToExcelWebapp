@@ -18,7 +18,12 @@ function sendFiles(f){
 
     for(var i = 0; i < f.files.length; i++){
             formData.append("files", f.files[i]);
-        }
+    }
+
+//    for(var v of formData.values()){
+//        alert(v.name);
+//    }
+
     xhr.open( "POST", "/restuploadFile", false);
     xhr.send(formData);
 }
@@ -48,7 +53,9 @@ function addTableRowsLoop(fil){
                 var count = 0;
                 for(var j = 1; j < pdfFileTableRows.length; j++){
 //                    alert("pdfFileTableRows[" + j + "].cells.item(0) = " + pdfFileTableRows[j].cells.item(0).innerHTML);
-                    if(fil[i].substring(fil[i].lastIndexOf('\\')+1) == pdfFileTableRows[j].cells.item(0).innerHTML){
+//                    alert("fil[" + i + "].substring(fil[" + i + "].lastIndexOf('\\')+1) " + fil[i].substring(fil[i].lastIndexOf('\\')+1) + " |pdfFileTableRows[" + j + "].cells.item(0) = " + pdfFileTableRows[j].cells.item(0).innerHTML);
+//                    alert(fil[i].substring(fil[i].lastIndexOf('\\')+1) == pdfFileTableRows[j].cells.item(0).innerText);
+                    if(fil[i].substring(fil[i].lastIndexOf('\\')+1) == pdfFileTableRows[j].cells.item(0).innerText){
                         count++;
                         continue top;
                     }
@@ -79,12 +86,41 @@ function addTableRows(fName){
 function deleteFileName(fName){
     var xhr = new XMLHttpRequest();
 
-    alert("start");
+//    alert("start");
 
     xhr.open( "POST", "/restdeleteFile?filename=" + fName, false);
     xhr.send(null);
 
-    alert("stop");
+    deleteRowFromTable(fName);
+
+//    alert("stop");
+}
+
+function deleteRowFromTable(fName){
+    var table = document.getElementById("pdfFileTable");
+    var tableRows = table.rows;
+
+    for(var i = tableRows.length - 1; i > 0; i--){
+//    for(var i = 1; i < tableRows.length; i++){
+//        alert("in");
+        if(tableRows[i].cells.item(0).innerText == fName){
+//            alert("i = " + i + "| table element = " + tableRows[i].cells.item(0).innerHTML + "| fname = " + fName)
+            table.deleteRow(i);
+        }
+    }
+}
+
+function deleteAllRows(){
+    var table = document.getElementById("pdfFileTable");
+    var tableRows = table.rows;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open( "POST", "/restdeleteSessionFolder", false);
+    xhr.send(null);
+
+    for(var i = tableRows.length - 1; i > 0; i--){
+        table.deleteRow(i);
+    }
 }
 
 function te(fileGetName){
