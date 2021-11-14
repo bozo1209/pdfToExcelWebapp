@@ -9,7 +9,7 @@ function add(f){
 
     sendFiles(f);
     addTableRowsLoop(getFiles());
-
+    clearFileInput();
 }
 
 function sendFiles(f){
@@ -121,6 +121,10 @@ function deleteAllRows(){
     for(var i = tableRows.length - 1; i > 0; i--){
         table.deleteRow(i);
     }
+}
+
+function clearFileInput(){
+    document.getElementById("filesId").value = null;
 }
 
 function te(fileGetName){

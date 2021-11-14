@@ -18,6 +18,9 @@ Project goal is to shorten time needed to create list of accounts and its amount
 - Spring Boot - version 2.5.5
 - Apache PdfBox - version 2.0.24
 - Apache POI - version 5.0.0
+- HTML5
+- JavaScript - version 1.7
+- CSS
 
 ## Setup
 To run app just go to link: https://bank-statement-pdf-to-excel.herokuapp.com/
