@@ -11,12 +11,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SaveAccountsAndAmountsInExcel {
 
     private String excelName;
 
-    public void saveInExcel(ArrayList<CustomPair<String, BigDecimal>> accountsAndAmountsList, String path){
+    public void saveInExcel(List<CustomPair<String, BigDecimal>> accountsAndAmountsList, String path){
         Workbook workbook = addValuesToExcel(createExcel(), accountsAndAmountsList);
         saveExcel(path, workbook);
     }
@@ -41,7 +42,7 @@ public class SaveAccountsAndAmountsInExcel {
         return workbook;
     }
 
-    private Workbook addValuesToExcel(Workbook workbook, ArrayList<CustomPair<String, BigDecimal>> accountsAndAmountsList){
+    private Workbook addValuesToExcel(Workbook workbook, List<CustomPair<String, BigDecimal>> accountsAndAmountsList){
         Sheet sheet = workbook.getSheet("accounts");
         Row row;
         Cell cell;

@@ -39,7 +39,8 @@ public class HomeService {
         createFilesMap(session);
         createNewSessionIdKey(session);
 //        return getFilesFromListBySessionIdFromMap(session);
-        return filesMapWithSessionId.get(session.getId());
+        return Collections.unmodifiableList(filesMapWithSessionId.get(session.getId()));
+//        return filesMapWithSessionId.get(session.getId());
     }
 
     public void submitService(MultipartFile[] multipartFiles, HttpSession session, RedirectAttributes redirectModel){
@@ -188,7 +189,7 @@ public class HomeService {
         SaveAccountsAndAmountsInExcel saveAccountsAndAmountsInExcel = new SaveAccountsAndAmountsInExcel();
         File[] files = getFilesFromListBySessionIdFromMap(session);
         String pathToSessionIdFolder = getPathToSessionIdFolder(files);
-        ArrayList<CustomPair<String, BigDecimal>> accountsAndAmountsList = extractsAccountsAndAmounts.getAccountsAndAmountsList(files);
+        List<CustomPair<String, BigDecimal>> accountsAndAmountsList = extractsAccountsAndAmounts.getAccountsAndAmountsList(files);
         saveAccountsAndAmountsInExcel.saveInExcel(accountsAndAmountsList, pathToSessionIdFolder);
         return new File(pathToSessionIdFolder + saveAccountsAndAmountsInExcel.getExcelName());
     }
