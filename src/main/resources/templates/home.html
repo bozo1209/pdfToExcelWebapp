@@ -27,15 +27,15 @@
 <!--                <button type="submit" title="delete all files, Excel and PDF, for this session">delete all</button>-->
 <!--            </form>-->
         </div>
-        <div>
-            <button onclick="test()">click</button>
-        </div>
+<!--        <div>-->
+<!--            <button onclick="test()">click</button>-->
+<!--        </div>-->
     </div>
 <!--    <div>-->
 <!--&lt;!&ndash;        <link rel="import" href="fileTable.html">&ndash;&gt;-->
 <!--        <iframe src="/fileTable.html" height="200" width="300"></iframe>-->
 <!--    </div>-->
-    <div th:insert="fileTable :: fileTable"></div>
+<!--    <div th:insert="fileTable :: fileTable"></div>-->
     <div>
         <table id="pdfFileTable">
             <tr>
@@ -52,9 +52,10 @@
 <!--                    [[${file.getAbsolutePath()}]]-->
                 </td>
                 <td>
-                    <form th:action="@{/deleteFile(filename=${file.getName()})}" method="post">
-                        <button type="submit" title="delete this file">delete</button>
-                    </form>
+                    <button th:onclick="deleteFileName([[${file.getName()}]])">delete</button>
+<!--                    <form th:action="@{/deleteFile(filename=${file.getName()})}" method="post">-->
+<!--                        <button type="submit" title="delete this file">delete</button>-->
+<!--                    </form>-->
 <!--                    <form th:action="@{/deleteFile/{fileName}(fileName=${file.getName()})}" method="get">-->
 <!--                        <button type="submit" title="delete this file">delete</button>-->
 <!--                    </form>-->

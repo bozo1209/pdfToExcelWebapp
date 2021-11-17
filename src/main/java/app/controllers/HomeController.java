@@ -52,7 +52,7 @@ public class HomeController {
 
 
 //    Map<String, List<MultipartFile>> filesMapWithSessionId;
-    Map<String, List<File>> filesMapWithSessionId;
+//    Map<String, List<File>> filesMapWithSessionId;
 //    Map<String, MultipartFile[]> filesMapWithSessionId;
 //    Map<String, String[]> filesMapWithSessionId;
 
@@ -110,19 +110,19 @@ public class HomeController {
 //        return new ModelAndView("/home.html", model)
     }
 
-    public String totylkotest(){
-        System.out.println("totylkotest()");
-        return "redirect:/home";
-    }
+//    public String totylkotest(){
+//        System.out.println("totylkotest()");
+//        return "redirect:/home";
+//    }
 
-    @PostMapping(path = "/uploadFile")
-    public String submit(
-            @RequestParam("files") MultipartFile[] multipartFile
-//            @RequestParam("files") File[] multipartFile
-            , HttpSession session
-            , RedirectAttributes model
-    ){
-        homeService.submitService(multipartFile, session, model);
+//    @PostMapping(path = "/uploadFile")
+//    public String submit(
+//            @RequestParam("files") MultipartFile[] multipartFile
+////            @RequestParam("files") File[] multipartFile
+//            , HttpSession session
+//            , RedirectAttributes model
+//    ){
+//        homeService.submitService(multipartFile, session, model);
 //        homeService.test(multipartFile, session);
 //        homeService.getPathToPlaceWhereWillBeCreatedFolderForSessionIdFolder(multipartFile, session);
 //        totylkotest();
@@ -220,12 +220,12 @@ public class HomeController {
 //            System.out.println("filesMapWithSessionId.get(session.getId()).get(" + i + ")" + filesMapWithSessionId.get(session.getId()).get(i).getName());
 ////            System.out.println("filesMapWithSessionId.get(session.getId()).get(" + i + ")" + filesMapWithSessionId.get(session.getId()).get(i).getOriginalFilename());
 //        }
-
-
-        return "redirect:/home";
-//        return "/fileTable.html";
-//        return "/home.html";
-    }
+//
+//
+//        return "redirect:/home";
+////        return "/fileTable.html";
+////        return "/home.html";
+//    }
 
     @GetMapping(path = "/generateExcel")
     public ResponseEntity<Resource> downloadExcel(HttpSession session
@@ -289,81 +289,81 @@ public class HomeController {
         return homeService.downloadExcelService(session);
     }
 
-    @GetMapping(path = "/deleteSessionFolder")
-    public String deleteSessionFolder(HttpSession session){
-        homeService.deleteSessionFolderService(session);
-        return "redirect:/home";
-    }
+//    @GetMapping(path = "/deleteSessionFolder")
+//    public String deleteSessionFolder(HttpSession session){
+//        homeService.deleteSessionFolderService(session);
+//        return "redirect:/home";
+//    }
 
 //    @GetMapping(path = "/deleteFile/{filename}")
 //    @GetMapping(path = "/deleteFile")
-    @PostMapping(path = "/deleteFile")
-    public String deleteFile(
-            @RequestParam(name = "filename") String filename,
-//            @PathVariable String filename,
-            HttpSession session){
-//        homeService.test(session);
-//        String fileAbsolutePath = "test";
-        System.out.println("session = " + session.getId());
-        homeService.deleteFileService(filename, session);
-        return "redirect:/home";
-    }
+//    @PostMapping(path = "/deleteFile")
+//    public String deleteFile(
+//            @RequestParam(name = "filename") String filename,
+////            @PathVariable String filename,
+//            HttpSession session){
+////        homeService.test(session);
+////        String fileAbsolutePath = "test";
+//        System.out.println("session = " + session.getId());
+//        homeService.deleteFileService(filename, session);
+//        return "redirect:/home";
+//    }
 
-    public List<File> arrayToList(File[] multipartFiles){
-//    public List<MultipartFile> arrayToList(MultipartFile[] multipartFiles){
-//        List<MultipartFile> list = new ArrayList<>();
-        List<File> list = new ArrayList<>();
-        Collections.addAll(list, multipartFiles);
-        return list;
-    }
-
-    /**
-     * thinks about what methods use to delete duplicate
-     */
-    public List<File> addsTwoLists(List<File> first, List<File> second){
-//    public List<MultipartFile> addsTwoLists(List<MultipartFile> first, List<MultipartFile> second){
-//        first.addAll(second);
-        first.addAll(removeDuplicatedFiles(first, second));
-        return first;
-//        return first.stream().distinct().collect(Collectors.toList());
-    }
-
-    public List<File> removeDuplicatedFiles(List<File> first, List<File> second){
-        for (int i = 0; i < first.size(); i++){
-            for (int j = 0; j < second.size(); j++){
-                System.out.println(first.get(i) + " " + second.get(j));
-                if (first.get(i).equals(second.get(j))){
-                    second.remove(j);
-                }
-            }
-        }
-        return second;
-    }
-
-    public boolean arrayIsEmptyOrNull(MultipartFile[] array){
-        if (array == null){
-            System.out.println("arr 1");
-            return true;
-        }
-        if (array.length == 0){
-            System.out.println("arr 2");
-            return true;
-        }
-        for(MultipartFile file : array){
-            System.out.println("arr 3");
-            if (file == null || file.isEmpty()){
-                System.out.println(file.getOriginalFilename());
-                System.out.println("arr 4");
-                return true;
-            }
-        }
-        System.out.println("arr 5");
-        return false;
-    }
-
-    public <T> T[] combineTwoArrays(T[] first, T[] second){
-        T[] result = Arrays.copyOf(first, first.length + second.length);
-        System.arraycopy(second, 0, result, first.length, second.length);
-        return result;
-    }
+//    public List<File> arrayToList(File[] multipartFiles){
+////    public List<MultipartFile> arrayToList(MultipartFile[] multipartFiles){
+////        List<MultipartFile> list = new ArrayList<>();
+//        List<File> list = new ArrayList<>();
+//        Collections.addAll(list, multipartFiles);
+//        return list;
+//    }
+//
+//    /**
+//     * thinks about what methods use to delete duplicate
+//     */
+//    public List<File> addsTwoLists(List<File> first, List<File> second){
+////    public List<MultipartFile> addsTwoLists(List<MultipartFile> first, List<MultipartFile> second){
+////        first.addAll(second);
+//        first.addAll(removeDuplicatedFiles(first, second));
+//        return first;
+////        return first.stream().distinct().collect(Collectors.toList());
+//    }
+//
+//    public List<File> removeDuplicatedFiles(List<File> first, List<File> second){
+//        for (int i = 0; i < first.size(); i++){
+//            for (int j = 0; j < second.size(); j++){
+//                System.out.println(first.get(i) + " " + second.get(j));
+//                if (first.get(i).equals(second.get(j))){
+//                    second.remove(j);
+//                }
+//            }
+//        }
+//        return second;
+//    }
+//
+//    public boolean arrayIsEmptyOrNull(MultipartFile[] array){
+//        if (array == null){
+//            System.out.println("arr 1");
+//            return true;
+//        }
+//        if (array.length == 0){
+//            System.out.println("arr 2");
+//            return true;
+//        }
+//        for(MultipartFile file : array){
+//            System.out.println("arr 3");
+//            if (file == null || file.isEmpty()){
+//                System.out.println(file.getOriginalFilename());
+//                System.out.println("arr 4");
+//                return true;
+//            }
+//        }
+//        System.out.println("arr 5");
+//        return false;
+//    }
+//
+//    public <T> T[] combineTwoArrays(T[] first, T[] second){
+//        T[] result = Arrays.copyOf(first, first.length + second.length);
+//        System.arraycopy(second, 0, result, first.length, second.length);
+//        return result;
+//    }
 }

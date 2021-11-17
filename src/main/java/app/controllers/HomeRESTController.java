@@ -45,7 +45,7 @@ public class HomeRESTController {
 
     @PostMapping(path = "/restdeleteSessionFolder")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSessionFolder(HttpSession session){
+    public void deleteSessionFolderREST(HttpSession session){
 //        System.out.println("delete start");
         homeService.deleteSessionFolderService(session);
 //        System.out.println("delete stop");
