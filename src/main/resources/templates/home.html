@@ -5,62 +5,33 @@
     <title>Saving Accounts And Amounts In Excel</title>
     <link rel="stylesheet" href="/home.css">
     <script src="/home.js"></script>
-<!--    <link rel="import" href="/fileTable.html">-->
 </head>
 <body>
 <div>
     <div>
         <div>
-<!--            <form class="formWithButtons" action="#" th:action="@{/uploadFile}" enctype="multipart/form-data" method="post">-->
                 <div class="formWithButtons">
                     <input id="filesId" type="file" name="files" multiple>
                     <input type="submit" value="add" onclick="add(document.getElementById('filesId'))">
                 </div>
-<!--            </form>-->
             <form class="formWithButtons" action="#" th:action="@{/generateExcel}" method="get">
                 <input type="submit" value="download Excel">
             </form>
             <div class="formWithButtons">
                 <button type="submit" title="delete all files, Excel and PDF, for this session" onclick="deleteAllRows()">delete all</button>
             </div>
-<!--            <form class="formWithButtons" th:action="@{/deleteSessionFolder}" method="get">-->
-<!--                <button type="submit" title="delete all files, Excel and PDF, for this session">delete all</button>-->
-<!--            </form>-->
         </div>
-<!--        <div>-->
-<!--            <button onclick="test()">click</button>-->
-<!--        </div>-->
     </div>
-<!--    <div>-->
-<!--&lt;!&ndash;        <link rel="import" href="fileTable.html">&ndash;&gt;-->
-<!--        <iframe src="/fileTable.html" height="200" width="300"></iframe>-->
-<!--    </div>-->
-<!--    <div th:insert="fileTable :: fileTable"></div>-->
     <div>
         <table id="pdfFileTable">
             <tr>
-                <th>
-                    PDF file name
-                </th>
-                <th>
-                    Action button
-                </th>
+                <th>PDF file name</th>
+                <th>Action button</th>
             </tr>
             <tr th:each="file : ${files}">
-                <td>
-                    [[${file.getName()}]]
-<!--                    [[${file.getAbsolutePath()}]]-->
-                </td>
+                <td>[[${file.getName()}]]</td>
                 <td>
                     <button th:onclick="deleteFileName([[${file.getName()}]])">delete</button>
-<!--                    <form th:action="@{/deleteFile(filename=${file.getName()})}" method="post">-->
-<!--                        <button type="submit" title="delete this file">delete</button>-->
-<!--                    </form>-->
-<!--                    <form th:action="@{/deleteFile/{fileName}(fileName=${file.getName()})}" method="get">-->
-<!--                        <button type="submit" title="delete this file">delete</button>-->
-<!--                    </form>-->
-<!--                    file.getAbsolutePath()-->
-<!--                    [[@{/deleteFile/{fileAbsolutePath}(fileAbsolutePath=${file.getAbsolutePath()})}]]-->
                 </td>
             </tr>
         </table>

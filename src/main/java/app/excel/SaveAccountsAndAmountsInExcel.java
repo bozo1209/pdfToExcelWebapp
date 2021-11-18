@@ -4,13 +4,11 @@ import app.utilities.interfaces.CustomPair;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SaveAccountsAndAmountsInExcel {
@@ -21,15 +19,6 @@ public class SaveAccountsAndAmountsInExcel {
         Workbook workbook = addValuesToExcel(createExcel(), accountsAndAmountsList);
         saveExcel(path, workbook);
     }
-
-    public void openExcel(String path){
-        try {
-            Desktop.getDesktop().open(new File(path + excelName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private Workbook createExcel(){
         Workbook workbook = new XSSFWorkbook();

@@ -38,23 +38,12 @@ public class HomeService {
     public List<File> getHomeRESTService(HttpSession session){
         createFilesMap(session);
         createNewSessionIdKey(session);
-//        return getFilesFromListBySessionIdFromMap(session);
         return Collections.unmodifiableList(filesMapWithSessionId.get(session.getId()));
-//        return filesMapWithSessionId.get(session.getId());
-    }
-
-    public void submitService(MultipartFile[] multipartFiles, HttpSession session, RedirectAttributes redirectModel){
-        addFilesToMapOfLists(multipartFiles, session);
-        addFilesListOfSessionIdToModel(session, null, redirectModel);
     }
 
     public void submitRESTService(MultipartFile[] multipartFiles, HttpSession session){
-//        System.out.println(filesMapWithSessionId.get(session.getId()).size());
         createNewSessionIdKey(session);
         addFilesToMapOfLists(multipartFiles, session);
-//        System.out.println("****** po ***");
-//        System.out.println(filesMapWithSessionId.get(session.getId()).size());
-//        System.out.println(filesMapWithSessionId.get(session.getId()).get(0));
     }
 
     public ResponseEntity<Resource> downloadExcelService(HttpSession session) throws IOException{
@@ -67,16 +56,6 @@ public class HomeService {
 
     public void deleteFileService(String fileName, HttpSession session){
         deleteFile(fileName, session);
-    }
-
-    public void test(HttpSession session){
-        List<File> files = filesMapWithSessionId.get(session.getId());
-        for (File file : files){
-//            String absolutePath = file.getAbsolutePath();
-            String absolutePath = file.getName();
-            System.out.println(absolutePath);
-            deleteFile(absolutePath, session);
-        }
     }
 
     private void createFilesMap(HttpSession session){
@@ -101,51 +80,26 @@ public class HomeService {
         }
     }
 
-    public void test(MultipartFile[] multipartFiles, HttpSession session){
-        System.out.println("********test************");
-        getPathToPlaceWhereWillBeCreatedFolderForSessionIdFolder(multipartFiles, session);
-    }
-
-//    private String redirectHome2(){
-//        return REDIRECT_HOME;
-//    }
-//
-//    private void redirectHome(){
-//        redirectHome2();
-//    }
-
-//    private void redirectHome3(){
-//        return;
-//    }
-
     private String getPathToPlaceWhereWillBeCreatedFolderForSessionIdFolder(MultipartFile[] multipartFiles, HttpSession session){
         if (multipartFiles[0].getOriginalFilename().equals("")){
-//            return REDIRECT_HOME;
             return null;
-//            redirectHome3();
         }
         String pathToFile = session.getServletContext().getRealPath(multipartFiles[0].getOriginalFilename());
         return pathToFile.replaceAll(multipartFiles[0].getOriginalFilename(), "") + session.getId();
     }
 
     private void createSessionIdFolder(String path){
-//        System.out.println("create folder");
         new File(path).mkdir();
     }
 
     private File[] createFileArray(MultipartFile[] multipartFiles, HttpSession session){
         String path = getPathToPlaceWhereWillBeCreatedFolderForSessionIdFolder(multipartFiles, session);
-//        if (path.equals(REDIRECT_HOME)){
-//            return null;
-//        }
         if (path == null){
             return null;
         }
         createSessionIdFolder(path);
         File[] files = new File[multipartFiles.length];
         for (int i = 0; i < multipartFiles.length; i++){
-//            System.out.println("multipartFiles[i].getOriginalFilename() = " + multipartFiles[i].getOriginalFilename());
-//            System.out.println("Paths.get(path, multipartFiles[i].getOriginalFilename()).toString() = " + Paths.get(path, multipartFiles[i].getOriginalFilename()).toString());
             files[i] = Paths.get(path, multipartFiles[i].getOriginalFilename()).toFile();
             try {
                 multipartFiles[i].transferTo(files[i]);
@@ -159,12 +113,9 @@ public class HomeService {
     private void addFilesToMapOfLists(MultipartFile[] multipartFiles, HttpSession session){
         File[] fileArray = createFileArray(multipartFiles, session);
         if (fileArray == null){
-//            System.out.println("****null*******");
             return;
         }
-//        System.out.println("fileArray[0] " + fileArray[0]);
         if (filesMapWithSessionId.get(session.getId()) != null){
-//            System.out.println("filesMapWithSessionId.get(session.getId()) != null");
             filesMapWithSessionId.replace(
                     session.getId(),
                     addsTwoLists(
@@ -173,7 +124,6 @@ public class HomeService {
                     )
             );
         }
-//        System.out.println("fileArray[0] " + fileArray[0]);
     }
 
     private File[] getFilesFromListBySessionIdFromMap(HttpSession session){
@@ -209,8 +159,6 @@ public class HomeService {
     private void deleteFile(String fileName, HttpSession session){
         int i = -1;
 
-//        List<File> files = filesMapWithSessionId.get(session.getId());
-
         for (File file : filesMapWithSessionId.get(session.getId())){
             if (file.getName().equals(fileName)){
                 i = filesMapWithSessionId.get(session.getId()).indexOf(file);
@@ -218,20 +166,13 @@ public class HomeService {
                 break;
             }
         }
-
-//        System.out.println("index to delete: " + i);
         filesMapWithSessionId.get(session.getId()).remove(i);
-
     }
 
     private void deleteSessionFolder(HttpSession session){
         String realPath = session.getServletContext().getRealPath(session.getId());
-//        System.out.println("realPath = " + realPath);
         File folder = new File(realPath);
         if(folder.isDirectory()){
-//            System.out.println("realPath = " + realPath);
-//            boolean delete = folder.delete();
-//            System.out.println("delete = " + delete);
             try {
                 FileUtils.deleteDirectory(folder);
             } catch (IOException e) {
@@ -245,8 +186,6 @@ public class HomeService {
     }
 
     private List<File> arrayToList(File[] multipartFiles){
-//    public List<MultipartFile> arrayToList(MultipartFile[] multipartFiles){
-//        List<MultipartFile> list = new ArrayList<>();
         List<File> list = new ArrayList<>();
         Collections.addAll(list, multipartFiles);
         return list;

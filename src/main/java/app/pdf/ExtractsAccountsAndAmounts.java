@@ -24,14 +24,11 @@ public class ExtractsAccountsAndAmounts {
             accountsAndAmountsList.add(checkBankName(file));
         }
         return Collections.unmodifiableList(accountsAndAmountsList);
-//        return accountsAndAmountsList;
     }
 
     public void printAccountsAndAmounts(List<CustomPair<String, BigDecimal>> list){
         System.out.println("*****************");
         list.forEach(System.out::println);
-//        System.out.println(list.isEmpty());
-//        System.out.println(list.get(0));
     }
 
     private CustomPair<String, BigDecimal> checkBankName(File file){
