@@ -1,5 +1,5 @@
 package app.bankNames;
 
 public enum BankNames {
-    PEKAO
+    PEKAO, MILLENNIUM
 }

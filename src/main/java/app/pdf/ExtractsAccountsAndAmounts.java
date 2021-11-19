@@ -1,6 +1,7 @@
 package app.pdf;
 
 import app.bankNames.BankNames;
+import app.utilities.implementations.ExtractingAccountAmountPairMilleniumImp;
 import app.utilities.implementations.ExtractingAccountAmountPairPekaoImp;
 import app.utilities.interfaces.CustomPair;
 import app.utilities.interfaces.ExtractingAccountAmountPair;
@@ -37,9 +38,15 @@ public class ExtractsAccountsAndAmounts {
             PDFTextStripper pdfTextStripper = new PDFTextStripper();
             String text = pdfTextStripper.getText(document);
             String[] lines = text.split("\n");
+//            String[] lines = text.split("\\R");
             for (String line : lines){
+//                System.out.println(line);
                 if (Pattern.compile("[a-zA-Z]* " + BankNames.PEKAO.name() + " S.A.\\s*").matcher(line.toUpperCase()).matches()){
                     pair = getCustomPair(lines, new ExtractingAccountAmountPairPekaoImp());
+                    break;
+                }
+                if (Pattern.compile("[a-zA-Z]*\\s" + BankNames.MILLENNIUM.name() + " S A\\s*").matcher(line.toUpperCase()).matches()){
+                    pair = getCustomPair(lines, new ExtractingAccountAmountPairMilleniumImp());
                     break;
                 }
             }

@@ -43,7 +43,8 @@ public class SaveAccountsAndAmountsInExcel {
             }
             row = sheet.createRow(rowNumber);
             cell = row.createCell(0);
-            cell.setCellValue("'" + pair.getAccount());
+//            cell.setCellValue("'" + pair.getAccount());
+            cell.setCellValue(pair.getAccount());
             cell = row.createCell(1);
             cell.setCellValue(pair.getAmount().doubleValue());
             rowNumber++;
