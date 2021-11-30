@@ -15,8 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -153,6 +152,7 @@ public class HomeService {
                 .headers(header)
                 .contentLength(excelFile.length())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
+//                .body(new ByteArrayResource(new FileInputStream(excelFile).readAllBytes()));
                 .body(byteArrayResource);
     }
 
