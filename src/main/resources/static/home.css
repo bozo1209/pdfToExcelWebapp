@@ -2,6 +2,30 @@
     display: inline-block;
 }
 
+.textStyle{
+    font-size: 16px;
+}
+
+.tableHeaderStyle{
+    font-size: 20px;
+    cursor: none;
+}
+
+.buttonStyle{
+    background-color: lightgray;
+    border: none;
+    cursor: pointer;
+}
+
+.buttonStyle:hover{
+    background-color: grey;
+}
+
+#mainDiv{
+    margin-top: 15px;
+    margin-left: 50px;
+}
+
 body{
     background-color: darkgrey;
 }

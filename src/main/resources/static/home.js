@@ -60,7 +60,7 @@ function addTableRows(fName){
 
     var fileGetName = fName.substring(fName.lastIndexOf('\\')+1);
     cell1.innerHTML = fileGetName;
-    cell2.innerHTML = "<button onclick='deleteFileName(\"" + fileGetName + "\")'>delete</button>"
+    cell2.innerHTML = "<button class='buttonStyle textStyle' onclick='deleteFileName(\"" + fileGetName + "\")'>delete</button>"
 }
 
 function deleteFileName(fName){

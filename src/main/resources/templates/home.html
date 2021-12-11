@@ -7,31 +7,32 @@
     <script src="/home.js"></script>
 </head>
 <body>
-<div>
+<div id="mainDiv">
     <div>
         <div>
-                <div class="formWithButtons">
-                    <input id="filesId" type="file" name="files" multiple>
-                    <input type="submit" value="add" onclick="add(document.getElementById('filesId'))">
-                </div>
+            <div class="formWithButtons">
+                <input id="filesId" type="file" name="files" style="display: none;" multiple>
+                <input class="buttonStyle textStyle" type="button" value="Choose files..." onclick="document.getElementById('filesId').click();" />
+                <input class="buttonStyle textStyle" type="submit" value="Add" onclick="add(document.getElementById('filesId'))">
+            </div>
             <form class="formWithButtons" action="#" th:action="@{/generateExcel}" method="get">
-                <input type="submit" value="download Excel">
+                <input class="buttonStyle textStyle" type="submit" value="Download Excel">
             </form>
             <div class="formWithButtons">
-                <button type="submit" title="delete all files, Excel and PDF, for this session" onclick="deleteAllRows()">delete all</button>
+                <button class="buttonStyle textStyle" type="submit" title="delete all files, Excel and PDF, for this session" onclick="deleteAllRows()">Delete all</button>
             </div>
         </div>
     </div>
     <div>
-        <table id="pdfFileTable">
-            <tr>
+        <table id="pdfFileTable" class="textStyle">
+            <tr class="tableHeaderStyle">
                 <th>PDF file name</th>
                 <th>Action button</th>
             </tr>
             <tr th:each="file : ${files}">
                 <td>[[${file.getName()}]]</td>
                 <td>
-                    <button th:onclick="deleteFileName([[${file.getName()}]])">delete</button>
+                    <button class="buttonStyle textStyle" th:onclick="deleteFileName([[${file.getName()}]])">delete</button>
                 </td>
             </tr>
         </table>
