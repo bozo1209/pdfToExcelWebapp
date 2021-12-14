@@ -11,9 +11,13 @@
     <div>
         <div>
             <div class="formWithButtons">
-                <input id="filesId" type="file" name="files" style="display: none;" multiple>
-                <input class="buttonStyle textStyle" type="button" value="Choose files..." onclick="document.getElementById('filesId').click();" />
-                <input class="buttonStyle textStyle" type="submit" value="Add" onclick="add(document.getElementById('filesId'))">
+<!--                <input id="filesId" type="file" name="files" style="display: none;" multiple>-->
+<!--                <input id="filesId" type="file" name="files" style="display: none;" multiple onchange="sprawdzenieOnChange()">-->
+                <input id="filesId" type="file" name="files" style="display: none;" onchange="add(document.getElementById('filesId'))" multiple>
+                <input class="buttonStyle textStyle" type="button" value="Choose and add files" onclick="document.getElementById('filesId').click();" />
+<!--                <input class="buttonStyle textStyle" type="button" value="Choose files..." onclick="addingFilesByJSTest()" />-->
+<!--                <input class="buttonStyle textStyle" type="button" value="Choose files..." onclick="addingFilesByJSTest()" onchange="sprawdzenieOnChange()"/>-->
+<!--                <input class="buttonStyle textStyle" type="submit" value="Add" onclick="add(document.getElementById('filesId'))">-->
             </div>
             <form class="formWithButtons" action="#" th:action="@{/generateExcel}" method="get">
                 <input class="buttonStyle textStyle" type="submit" value="Download Excel">
