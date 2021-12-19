@@ -105,7 +105,7 @@ public class HomeService {
             return null;
         }
         String pathToFile = session.getServletContext().getRealPath(multipartFiles[0].getOriginalFilename());
-        System.out.println(pathToFile);
+//        System.out.println(pathToFile);
         return pathToFile.replaceAll(multipartFiles[0].getOriginalFilename(), "") + session.getId();
     }
 
@@ -202,13 +202,14 @@ public class HomeService {
             }
 
             filesMapWithSessionId.remove(session.getId());
-        }else {
-            System.out.println("nope");
+//        }else {
+//            System.out.println("nope");
         }
     }
 
-    @Scheduled(cron = "* * 20 * * *")
+    @Scheduled(cron = "0 0 20 * * *")
     private void deleteAllSessionFolders(){
+//        System.out.println("to chyba to");
 //        String realPath2 = servletContext.getRealPath("");
 //        System.out.println("realPath2 = " + realPath2);
         if (filesMapWithSessionId != null){
@@ -329,7 +330,7 @@ public class HomeService {
     private List<File> removeDuplicatedFiles(List<File> first, List<File> second){
         for (int i = 0; i < first.size(); i++){
             for (int j = 0; j < second.size(); j++){
-                System.out.println(first.get(i) + " " + second.get(j));
+//                System.out.println(first.get(i) + " " + second.get(j));
                 if (first.get(i).equals(second.get(j))){
                     second.remove(j);
                 }

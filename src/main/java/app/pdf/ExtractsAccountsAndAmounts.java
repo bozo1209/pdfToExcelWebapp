@@ -27,10 +27,10 @@ public class ExtractsAccountsAndAmounts {
         return Collections.unmodifiableList(accountsAndAmountsList);
     }
 
-    public void printAccountsAndAmounts(List<CustomPair<String, BigDecimal>> list){
-        System.out.println("*****************");
-        list.forEach(System.out::println);
-    }
+//    public void printAccountsAndAmounts(List<CustomPair<String, BigDecimal>> list){
+//        System.out.println("*****************");
+//        list.forEach(System.out::println);
+//    }
 
     private CustomPair<String, BigDecimal> checkBankName(File file){
         CustomPair<String, BigDecimal> pair = null;
