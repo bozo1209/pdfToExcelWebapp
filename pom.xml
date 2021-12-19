@@ -10,13 +10,11 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>pdftoexcelwebapp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-beta</version>
 	<name>pdfToExcelWebapp</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
-<!--		<maven.compiler.source>17</maven.compiler.source>-->
-<!--		<maven.compiler.target>17</maven.compiler.target>-->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -60,30 +58,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.apache.maven.plugins</groupId>-->
-<!--				<artifactId>maven-compiler-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<source>17</source>-->
-<!--					<target>17</target>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
-<!--			<plugin>-->
-<!--				<groupId>org.apache.maven.plugins</groupId>-->
-<!--				<artifactId>maven-compiler-plugin</artifactId>-->
-<!--				<configuration>-->
-<!--					<source>16</source>-->
-<!--					<target>16</target>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <source>14</source>-->
-<!--                    <target>14</target>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
         </plugins>
 	</build>
 

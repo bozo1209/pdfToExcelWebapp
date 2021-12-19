@@ -100,23 +100,3 @@ function clearFileInput(){
     document.getElementById("filesId").value = null;
 }
 
-//var theFile = document.getElementById('filesId');
-//
-//function addingFilesByJSTest(){
-////    alert("hey");
-//    document.getElementById('filesId').click();
-////    document.body.onfocus = checkIt()
-////    alert("it's me again")
-//}
-//
-//function sprawdzenieOnChange(){
-//    alert("onchange");
-//}
-//
-//function checkIt(){
-//    if(theFile.value.length){
-//        alert("yes");
-//    }else{
-//        alert("no");
-//    }
-//}

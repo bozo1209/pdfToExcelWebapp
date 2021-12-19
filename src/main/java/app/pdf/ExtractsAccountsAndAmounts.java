@@ -27,20 +27,13 @@ public class ExtractsAccountsAndAmounts {
         return Collections.unmodifiableList(accountsAndAmountsList);
     }
 
-//    public void printAccountsAndAmounts(List<CustomPair<String, BigDecimal>> list){
-//        System.out.println("*****************");
-//        list.forEach(System.out::println);
-//    }
-
     private CustomPair<String, BigDecimal> checkBankName(File file){
         CustomPair<String, BigDecimal> pair = null;
         try(PDDocument document = PDDocument.load(file)) {
             PDFTextStripper pdfTextStripper = new PDFTextStripper();
             String text = pdfTextStripper.getText(document);
             String[] lines = text.split("\n");
-//            String[] lines = text.split("\\R");
             for (String line : lines){
-//                System.out.println(line);
                 if (Pattern.compile("[a-zA-Z]* " + BankNames.PEKAO.name() + " S.A.\\s*").matcher(line.toUpperCase()).matches()){
                     pair = getCustomPair(lines, new ExtractingAccountAmountPairPekaoImp());
                     break;
