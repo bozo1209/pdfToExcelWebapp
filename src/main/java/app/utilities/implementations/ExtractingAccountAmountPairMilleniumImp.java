@@ -13,7 +13,7 @@ public class ExtractingAccountAmountPairMilleniumImp implements ExtractingAccoun
         CustomPair<String, BigDecimal> pair = new CustomPairImp<>();
         String account = "account";
         String amount = "amount";
-        String accountRegex = "[a-zA-Z]*:\\s*(?<" + account + ">\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4})\\s*";
+        String accountRegex = "[a-zA-Z]*:\\s*(?<" + account + ">\\d{2}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}).*\\s*";
         String valueRegex = "SALDO KOŃCOWE\\s*(?<" + amount + ">-?\\d{0,3},?\\d{0,3},?\\d{0,3},?\\d{0,3}.\\d{2})\\s*";
         for (String line : lines){
             Matcher matcher = Pattern.compile(accountRegex + "|" + valueRegex).matcher(line);
