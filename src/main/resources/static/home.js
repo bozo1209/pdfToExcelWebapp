@@ -1,7 +1,7 @@
 
 function add(f){
     sendFiles(f);
-    addTableRowsLoop(getFiles());
+    addTableRowsLoop(f);
     clearFileInput();
 }
 
@@ -28,25 +28,25 @@ function getFiles(){
     return fil;
 }
 
-function addTableRowsLoop(fil){
+function addTableRowsLoop(f){
     var pdfFileTableRows = document.getElementById("pdfFileTable").rows;
 
         if(pdfFileTableRows.length == 1){
-            for(var i = 0; i < fil.length; i++){
-                addTableRows(fil[i]);
+            for(var i = 0; i < f.files.length; i++){
+                addTableRows(f.files[i].name);
             }
         }else{
             top:
-            for(var i = 0; i < fil.length; i++){
+            for(var i = 0; i < f.files.length; i++){
                 var count = 0;
                 for(var j = 1; j < pdfFileTableRows.length; j++){
-                    if(fil[i].substring(fil[i].lastIndexOf('\\')+1) == pdfFileTableRows[j].cells.item(0).innerText){
+                    if(f.files[i].name == pdfFileTableRows[j].cells.item(0).innerText){
                         count++;
                         continue top;
                     }
                 }
                 if(count == 0){
-                    addTableRows(fil[i]);
+                    addTableRows(f.files[i].name);
                 }
             }
         }
